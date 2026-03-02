@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 typedef struct {
     char *buffer;
@@ -17,9 +18,16 @@ InputBuffer *new_input_buffer() {
    return input_buffer;
 }
 
+void print_prompt() {
+    printf("db > ");
+}
+
 int main(int argc, char *argv[]) {
     InputBuffer *input_buffer = new_input_buffer();
-    printf("Address of input buffer: %p\n", (void*)input_buffer);
-    free(input_buffer);    
+
+    while (true) {
+        print_prompt();
+    }
+
     return 0;
 }
