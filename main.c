@@ -1,33 +1,65 @@
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 
 typedef struct {
-    char *buffer;
-    size_t buffer_length;
-    ssize_t input_length;
-} InputBuffer;
+    char *input_buffer;
+    size_t buffer_size;
+    ssize_t input_size;
+} Buffer;
 
-InputBuffer *new_input_buffer() {
-   InputBuffer *input_buffer = malloc(sizeof(InputBuffer));
-   
-   input_buffer->buffer = NULL;
-   input_buffer->buffer_length = 0;
-   input_buffer->input_length = 0;
+Buffer *create_buffer() {
+    Buffer *buffer = malloc(sizeof(Buffer));
 
-   return input_buffer;
+    buffer->input_buffer = NULL;
+    buffer->buffer_size = 0;
+    buffer->input_size = 0;
+
+    return buffer;
 }
 
 void print_prompt() {
     printf("db > ");
 }
 
+void read_input(Buffer *buffer) {
+    ssize_t chars_read = getline(
+        &buffer->input_buffer,
+        &buffer->buffer_size,
+        stdin
+    );
+
+    if (chars_read <= 0) {
+        printf("Error reading input\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // required for the close_buffer condition
+    buffer->input_size = chars_read - 1;
+    buffer->input_buffer[chars_read - 1] = '\0';
+}
+
+void close_buffer(Buffer *buffer) {
+    free(buffer->input_buffer);
+    free(buffer);
+}
+
 int main(int argc, char *argv[]) {
-    InputBuffer *input_buffer = new_input_buffer();
+    Buffer *buffer = create_buffer();
 
     while (true) {
         print_prompt();
+        read_input(buffer);
+
+        if (strcmp(buffer->input_buffer, ".exit") == 0) {
+            close_buffer(buffer);
+            exit(EXIT_SUCCESS);
+        } else {
+            printf("Unrecognized command '%s'. \n ", buffer->input_buffer);
+        }
     }
 
     return 0;
 }
+
