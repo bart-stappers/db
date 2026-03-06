@@ -50,6 +50,16 @@ void close_buffer(Buffer *buffer) {
     free(buffer);
 }
 
+// Wrapper for existing functionality
+MetaCommandResult do_meta_command(Buffer *buffer) {
+    if (strcmp(buffer->input_buffer, ".exit") == 0) {
+        close_buffer(buffer);
+        exit(EXIT_SUCCESS);
+    } else {
+        return META_COMMAND_UNKNOWN_COMMAND;
+    }
+}
+
 int main(int argc, char *argv[]) {
     (void)argc;
     (void)argv;
