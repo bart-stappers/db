@@ -9,6 +9,11 @@ typedef struct {
     ssize_t input_size;
 } Buffer;
 
+typedef enum {
+    META_COMMAND_SUCCESS,
+    META_COMMAND_UNKNOWN_COMMAND
+} MetaCommandResult;
+
 Buffer *create_buffer() {
     Buffer *buffer = malloc(sizeof(Buffer));
 
@@ -46,6 +51,9 @@ void close_buffer(Buffer *buffer) {
 }
 
 int main(int argc, char *argv[]) {
+    (void)argc;
+    (void)argv;
+
     Buffer *buffer = create_buffer();
 
     while (true) {
