@@ -14,6 +14,15 @@ typedef enum {
     META_COMMAND_UNKNOWN_COMMAND
 } MetaCommandResult;
 
+typedef enum {
+    STATEMENT_INSERT,
+    STATEMENT_SELECT
+} StatementType;
+
+typedef struct {
+    StatementType type;
+} Statement;
+
 Buffer *create_buffer() {
     Buffer *buffer = malloc(sizeof(Buffer));
 
@@ -40,7 +49,7 @@ void read_input(Buffer *buffer) {
         exit(EXIT_FAILURE);
     }
 
-    // required for the close_buffer condition
+    // Required for the close_buffer condition
     buffer->input_size = chars_read - 1;
     buffer->input_buffer[chars_read - 1] = '\0';
 }
@@ -59,6 +68,13 @@ MetaCommandResult do_meta_command(Buffer *buffer) {
         return META_COMMAND_UNKNOWN_COMMAND;
     }
 }
+
+// Simplistic version of SQL compiler:
+// It takes text input and converts it into an internal representation
+// (Statement) that the virtual machine can execute.
+
+// TODO: add SQL compiler here
+
 
 int main(int argc, char *argv[]) {
     (void)argc;
