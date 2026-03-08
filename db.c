@@ -98,14 +98,27 @@ int main(int argc, char *argv[])
 		print_prompt();
 		read_input(buffer);
 
-		if (strcmp(buffer->input_buffer, ".exit") == 0) {
-			close_buffer(buffer);
-			exit(EXIT_SUCCESS);
-		} else {
-			printf("Unrecognized command '%s'. \n ",
+		// Dispatch meta-commands
+		if (buffer->input_buffer[0] == '.') {
+			switch (do_meta_command(buffer)) {
+			case (META_COMMAND_SUCCESS):
+				continue;
+			case (META_COMMAND_UNKNOWN_COMMAND):
+				printf("Unknown command '%s'\n",
+				       buffer->input_buffer);
+				continue;
+			}
+		}
+
+		// Dispatch SQL statements
+		Statement statement;
+		switch (prepare_statement(buffer, &statement)) {
+		case (PREPARE_SUCCESS):
+			break;
+		case (PREPARE_UNKNOWN_STATEMENT):
+			printf("Unknown keyword at the start of '%s'.\n",
 			       buffer->input_buffer);
+			continue;
 		}
 	}
-
-	return 0;
 }
