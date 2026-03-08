@@ -14,6 +14,8 @@ typedef enum {
 	META_COMMAND_UNKNOWN_COMMAND
 } MetaCommandResult;
 
+typedef enum { PREPARE_SUCCESS, PREPARE_UNKNOWN_STATEMENT } PrepareResult;
+
 typedef enum { STATEMENT_INSERT, STATEMENT_SELECT } StatementType;
 
 typedef struct {
@@ -72,7 +74,18 @@ MetaCommandResult do_meta_command(Buffer *buffer)
 // It takes text input and converts it into an internal representation
 // (Statement) that the virtual machine can execute.
 
-// TODO: add SQL compiler here
+PrepareResult prepare_statement(Buffer *buffer, Statement *statement)
+{
+	if (strncmp(buffer->input_buffer, "insert", 6) == 0) {
+		statement->type = STATEMENT_INSERT;
+		return PREPARE_SUCCESS;
+	}
+	if (strcmp(buffer->input_buffer, "select") == 0) {
+		statement->type = STATEMENT_SELECT;
+		return PREPARE_SUCCESS;
+	}
+	return PREPARE_UNKNOWN_STATEMENT;
+}
 
 int main(int argc, char *argv[])
 {
