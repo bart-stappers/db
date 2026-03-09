@@ -87,6 +87,19 @@ PrepareResult prepare_statement(Buffer *buffer, Statement *statement)
 	return PREPARE_UNKNOWN_STATEMENT;
 }
 
+// This is the virtual machine part
+void execute_statement(Statement *statement)
+{
+	switch (statement->type) {
+	case (STATEMENT_INSERT):
+		printf("This is where we would do and INSERT.\n");
+		break;
+	case (STATEMENT_SELECT):
+		printf("This is where we would do a SELECT.\n");
+		break;
+	}
+}
+
 int main(int argc, char *argv[])
 {
 	(void)argc;
@@ -120,5 +133,8 @@ int main(int argc, char *argv[])
 			       buffer->input_buffer);
 			continue;
 		}
+
+		execute_statement(&statement);
+		printf("Executed.\n");
 	}
 }
