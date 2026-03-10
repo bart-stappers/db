@@ -1,5 +1,13 @@
-db: db.c
-	gcc -Wall -Wextra -Werror db.c -o db
+CC = gcc
+CFLAGS = -Wall -Wextra -Werror
 
-format: *.c
-	clang-format -i *.c
+SRC = db.c input.c
+
+db: $(SRC)
+	$(CC) $(CFLAGS) $(SRC) -o db
+
+format:
+	clang-format -i *.c *.h
+
+clean:
+	rm -f db
