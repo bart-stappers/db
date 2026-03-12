@@ -4,11 +4,7 @@
 #include <string.h>
 
 #include "input.h"
-
-typedef enum {
-	META_COMMAND_SUCCESS,
-	META_COMMAND_UNKNOWN_COMMAND
-} MetaCommandResult;
+#include "meta.h"
 
 typedef enum { PREPARE_SUCCESS, PREPARE_UNKNOWN_STATEMENT } PrepareResult;
 
@@ -21,17 +17,6 @@ typedef struct {
 void print_prompt()
 {
 	printf("db > ");
-}
-
-// Wrapper for existing functionality
-MetaCommandResult do_meta_command(Buffer *buffer)
-{
-	if (strcmp(buffer->input_buffer, ".exit") == 0) {
-		close_buffer(buffer);
-		exit(EXIT_SUCCESS);
-	} else {
-		return META_COMMAND_UNKNOWN_COMMAND;
-	}
 }
 
 // Simplistic version of SQL compiler:
