@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 
-SRC = db.c input.c meta.c compiler.c vm.c
+SRC = main.c input.c meta.c compiler.c vm.c
 
 db: $(SRC)
 	$(CC) $(CFLAGS) $(SRC) -o db
