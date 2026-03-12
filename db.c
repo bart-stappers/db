@@ -5,35 +5,11 @@
 
 #include "input.h"
 #include "meta.h"
-
-typedef enum { PREPARE_SUCCESS, PREPARE_UNKNOWN_STATEMENT } PrepareResult;
-
-typedef enum { STATEMENT_INSERT, STATEMENT_SELECT } StatementType;
-
-typedef struct {
-	StatementType type;
-} Statement;
+#include "compiler.h"
 
 void print_prompt()
 {
 	printf("db > ");
-}
-
-// Simplistic version of SQL compiler:
-// It takes text input and converts it into an internal representation
-// (Statement) that the virtual machine can execute.
-
-PrepareResult prepare_statement(Buffer *buffer, Statement *statement)
-{
-	if (strncmp(buffer->input_buffer, "insert", 6) == 0) {
-		statement->type = STATEMENT_INSERT;
-		return PREPARE_SUCCESS;
-	}
-	if (strcmp(buffer->input_buffer, "select") == 0) {
-		statement->type = STATEMENT_SELECT;
-		return PREPARE_SUCCESS;
-	}
-	return PREPARE_UNKNOWN_STATEMENT;
 }
 
 // This is the virtual machine part
