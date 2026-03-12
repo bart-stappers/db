@@ -6,23 +6,11 @@
 #include "input.h"
 #include "meta.h"
 #include "compiler.h"
+#include "vm.h"
 
 void print_prompt()
 {
 	printf("db > ");
-}
-
-// This is the virtual machine part
-void execute_statement(Statement *statement)
-{
-	switch (statement->type) {
-	case (STATEMENT_INSERT):
-		printf("This is where we would do and INSERT.\n");
-		break;
-	case (STATEMENT_SELECT):
-		printf("This is where we would do a SELECT.\n");
-		break;
-	}
 }
 
 int main(int argc, char *argv[])
