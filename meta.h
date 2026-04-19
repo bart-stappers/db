@@ -2,12 +2,13 @@
 #define META_H
 
 #include "input.h"
+#include "table.h"
 
 typedef enum {
 	META_COMMAND_SUCCESS,
 	META_COMMAND_UNKNOWN_COMMAND
 } MetaCommandResult;
 
-MetaCommandResult do_meta_command(Buffer *buffer);
+MetaCommandResult do_meta_command(Buffer *buffer, Table *table);
 
 #endif

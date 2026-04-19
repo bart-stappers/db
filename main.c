@@ -7,6 +7,7 @@
 #include "meta.h"
 #include "compiler.h"
 #include "vm.h"
+#include "table.h"
 
 void print_prompt()
 {
@@ -18,6 +19,7 @@ int main(int argc, char *argv[])
 	(void)argc;
 	(void)argv;
 
+	Table *table = new_table();
 	Buffer *buffer = create_buffer();
 
 	while (true) {
@@ -26,7 +28,7 @@ int main(int argc, char *argv[])
 
 		// Dispatch meta-commands
 		if (buffer->input_buffer[0] == '.') {
-			switch (do_meta_command(buffer)) {
+			switch (do_meta_command(buffer, table)) {
 			case (META_COMMAND_SUCCESS):
 				continue;
 			case (META_COMMAND_UNKNOWN_COMMAND):
@@ -41,13 +43,25 @@ int main(int argc, char *argv[])
 		switch (prepare_statement(buffer, &statement)) {
 		case (PREPARE_SUCCESS):
 			break;
+		case (PREPARE_SYNTAX_ERROR):
+			printf("Syntax error. Could not parse statement.\n");
+			continue;
 		case (PREPARE_UNKNOWN_STATEMENT):
 			printf("Unknown keyword at the start of '%s'.\n",
 			       buffer->input_buffer);
 			continue;
 		}
 
-		execute_statement(&statement);
-		printf("Executed.\n");
+		switch (execute_statement(&statement, table)) {
+		case (EXECUTE_SUCCESS):
+			printf("Executed.\n");
+			break;
+		case (EXECUTE_TABLE_FULL):
+			printf("Error: Table full.\n");
+			break;
+		case (EXECUTE_UNKNOWN_STATEMENT):
+			printf("Error: Unknown statement type.\n");
+			break;
+		}
 	}
 }

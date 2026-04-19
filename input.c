@@ -34,4 +34,3 @@ void close_buffer(Buffer *buffer)
 	free(buffer->input_buffer);
 	free(buffer);
 }
-

@@ -2,7 +2,14 @@
 #define VM_H
 
 #include "compiler.h"
+#include "table.h"
 
-void execute_statement(Statement *statement);
+typedef enum {
+	EXECUTE_SUCCESS,
+	EXECUTE_TABLE_FULL,
+	EXECUTE_UNKNOWN_STATEMENT
+} ExecuteResult;
+
+ExecuteResult execute_statement(Statement *statement, Table *table);
 
 #endif
